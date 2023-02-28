@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BombController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+  [Header ("Parameters")]
+  [SerializeField] private float explosionRadius;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  [Header ("Links")]
+  [SerializeField] private MeshRenderer mRenderer;
+  [SerializeField] private SphereCollider sCollider;
+
+  public void FinishLanding ()
+  {
+    SimulateExplosion ();
+  }
+
+  private void SimulateExplosion ()
+  {
+    mRenderer.enabled = false;
+
+    sCollider.enabled = true;
+    sCollider.radius = explosionRadius;
+
+    Destroy (gameObject, 0.5f);
+  }
 }

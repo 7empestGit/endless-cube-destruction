@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
+  [Header ("Links")]
+  [SerializeField] private MeshRenderer mRenderer;
+
   private Transform floorTransform;
+
+  private const string BOMB_TAG = "Bomb";
 
   #region Unity Methods
 
   void OnTriggerEnter (Collider other)
   {
-    if (other.CompareTag ("Bomb"))
-      GotDamaged ();
+    if (other.CompareTag (BOMB_TAG))
+      GetDamage ();
   }
 
   #endregion
@@ -54,10 +59,21 @@ public class TargetController : MonoBehaviour
 
   private IEnumerator Respawn ()
   {
+    transform.position = GetRandomPosition ();
+
     int randDelay = Random.Range (1, 4);
     yield return new WaitForSeconds (randDelay);
 
-    StartCoroutine (GetPositionAndMove ());
+    mRenderer.enabled = true;
+
+    StartCoroutine (MoveTo (GetRandomPosition (), 2f));
+  }
+
+  private void GetDamage ()
+  {
+    mRenderer.enabled = false;
+    StopAllCoroutines ();
+    StartCoroutine (Respawn ());
   }
 
   #endregion
@@ -65,15 +81,10 @@ public class TargetController : MonoBehaviour
 
   #region Public Methods
 
-  public void GotDamaged ()
-  {
-    StopAllCoroutines ();
-    StartCoroutine (Respawn ());
-  }
-
   public void SetFloorTransform (Transform transform)
   {
     floorTransform = transform;
+    StartCoroutine (MoveTo (GetRandomPosition (), 2f));
   }
 
   #endregion

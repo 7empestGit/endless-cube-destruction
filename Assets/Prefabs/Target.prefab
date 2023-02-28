@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8191545215853342918}
   - component: {fileID: 8191545215853342917}
   - component: {fileID: 8191545215853342916}
+  - component: {fileID: 1764867942652765309}
   - component: {fileID: 6790423399422156265}
   m_Layer: 0
   m_Name: Target
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8191545215853342918
 MeshFilter:
@@ -106,6 +107,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1764867942652765309
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8191545215853342923}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &6790423399422156265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,3 +146,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a2274e12e8b5440a8d97facf9d0ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mRenderer: {fileID: 8191545215853342917}
