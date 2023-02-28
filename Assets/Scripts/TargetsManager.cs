@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class TargetsManager : MonoBehaviour
 {
   [Header ("Links")]
   [SerializeField] private TargetController[] targetControllers;
@@ -10,11 +10,6 @@ public class GameManager : MonoBehaviour
   void Start ()
   {
     SetFloorTransforms ();
-  }
-
-  void Update ()
-  {
-
   }
 
   private void SetFloorTransforms ()

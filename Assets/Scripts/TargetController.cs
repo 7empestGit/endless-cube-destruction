@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class TargetController : MonoBehaviour
 {
-  private bool isDead;
-
   private Transform floorTransform;
+
+  #region Unity Methods
+
+  void OnTriggerEnter (Collider other)
+  {
+    if (other.CompareTag ("Bomb"))
+      GotDamaged ();
+  }
+
+  #endregion
+
+  #region Private Methods
 
   private IEnumerator GetPositionAndMove ()
   {
-    if (isDead)
-      yield break;
-
     int randDelay = Random.Range (3, 7);
     yield return new WaitForSeconds (randDelay);
 
@@ -50,19 +57,24 @@ public class TargetController : MonoBehaviour
     int randDelay = Random.Range (1, 4);
     yield return new WaitForSeconds (randDelay);
 
-    isDead = false;
     StartCoroutine (GetPositionAndMove ());
   }
 
+  #endregion
+
+
+  #region Public Methods
+
   public void GotDamaged ()
   {
-    isDead = true;
+    StopAllCoroutines ();
     StartCoroutine (Respawn ());
   }
 
   public void SetFloorTransform (Transform transform)
   {
     floorTransform = transform;
-    StartCoroutine (GetPositionAndMove ());
   }
+
+  #endregion
 }
