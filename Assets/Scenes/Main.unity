@@ -478,6 +478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIManager: {fileID: 80183674}
+  KilledEnemiesAmount: 0
 --- !u!1 &80183672
 GameObject:
   m_ObjectHideFlags: 0
