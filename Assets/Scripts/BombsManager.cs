@@ -8,15 +8,72 @@ public class BombsManager : MonoBehaviour
 
   private const float FIRING_ANGLE = 45.0f;
   private const float GRAVITATIONAL_ACCELERATION = 9.81f;
+  private const int MAX_AMOUNT_OF_BOMBS = 5;
 
-  private float cooldownTimer = 0.5f;
+  private const float GENERATE_BOMB_DELAY = 1.0f;
+  private const float BOMB_SHOOT_COOLDOWN_DELAY = 0.5f;
 
-  private bool canThrowBomb;
+  private float cooldownTimer;
+  private float generateBombTimer;
+  private int currentBombsAmount;
+
+  void Start ()
+  {
+    currentBombsAmount = 5;
+  }
 
   void Update ()
   {
-    HandleTimer ();
+    HandleTimers ();
     HandleRaycasting ();
+  }
+  
+  private void HandleTimers ()
+  {
+    if (cooldownTimer > 0)
+    {
+      cooldownTimer -= Time.deltaTime;
+    }
+
+    if (generateBombTimer > 0)
+    {
+      generateBombTimer -= Time.deltaTime;
+    }
+    else if (currentBombsAmount < MAX_AMOUNT_OF_BOMBS)
+    {
+      currentBombsAmount++;
+      UpdateValues ();
+    }
+  }
+
+  private void HandleRaycasting ()
+  {
+    if (CanThrowBomb ())
+    {
+      Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+
+      if (Physics.Raycast (ray, out RaycastHit hit))
+      {
+        Vector3 hitPoint = hit.point;
+        StartCoroutine (SimulateProjectile (hitPoint));
+      }
+
+      currentBombsAmount--;
+      cooldownTimer = BOMB_SHOOT_COOLDOWN_DELAY;
+      generateBombTimer = GENERATE_BOMB_DELAY;
+      UpdateValues ();
+    }
+  }
+
+  private bool CanThrowBomb ()
+  {
+    return Input.GetMouseButtonDown (0) && cooldownTimer <= 0 && currentBombsAmount > 0;
+  }
+
+  private void UpdateValues ()
+  {
+    GameManager.Instance.GenerateBombTimer = generateBombTimer;
+    GameManager.Instance.CurrentBombsAmount = currentBombsAmount;
   }
 
   private IEnumerator SimulateProjectile (Vector3 targetPosition)
@@ -48,34 +105,5 @@ public class BombsManager : MonoBehaviour
     }
 
     projectile.gameObject.GetComponent<BombController> ().FinishLanding ();
-  }
-  
-  private void HandleTimer ()
-  {
-    if (cooldownTimer > 0)
-    {
-      cooldownTimer -= Time.deltaTime;
-      canThrowBomb = false;
-    }
-    else
-    {
-      canThrowBomb = true;
-    }
-  }
-
-  private void HandleRaycasting ()
-  {
-    if (Input.GetMouseButtonDown (0) && canThrowBomb)
-    {
-      Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-
-      if (Physics.Raycast (ray, out RaycastHit hit))
-      {
-        Vector3 hitPoint = hit.point;
-        StartCoroutine (SimulateProjectile (hitPoint));
-      }
-
-      cooldownTimer = 0.5f;
-    }
   }
 }

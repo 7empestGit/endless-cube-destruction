@@ -147,3 +147,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mRenderer: {fileID: 8191545215853342917}
+  boxCollider: {fileID: 8191545215853342916}

@@ -6,10 +6,13 @@ public class TargetController : MonoBehaviour
 {
   [Header ("Links")]
   [SerializeField] private MeshRenderer mRenderer;
+  [SerializeField] private BoxCollider boxCollider;
 
   private Transform floorTransform;
 
   private const string BOMB_TAG = "Bomb";
+
+  private int killedEnemiesAmount;
 
   #region Unity Methods
 
@@ -65,12 +68,15 @@ public class TargetController : MonoBehaviour
     yield return new WaitForSeconds (randDelay);
 
     mRenderer.enabled = true;
+    boxCollider.enabled = true;
 
     StartCoroutine (MoveTo (GetRandomPosition (), 2f));
   }
 
   private void GetDamage ()
   {
+    GameManager.Instance.EnemyKilled ();
+    boxCollider.enabled = false;
     mRenderer.enabled = false;
     StopAllCoroutines ();
     StartCoroutine (Respawn ());
